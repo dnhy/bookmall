@@ -17,12 +17,6 @@
          default:'deeppink'
        }
     },
-    data(){
-      return{
-        // isActive:true,
-        path:'/home'
-      }
-    },
     computed:{
       isActive(){
         // console.log("this.$route.path:"+this.$route.path)
@@ -36,7 +30,9 @@
     },
     methods:{
       itemClick(){
-        this.$router.replace(this.path)
+        if(this.$route.path !== this.path) {
+          this.$router.replace(this.path)
+        }
       }
     }
   }

@@ -1,7 +1,8 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center"><Search/></div><div slot="right">登录</div></nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="scroll" :pull-up-load=true>
+    <scroll class="content" ref="scroll" :probe-type="3" @scroll="scroll"
+            :pull-up-load="true" @pullingUp="loadMore">
       <home-swiper :banners="banners"/>
       <HomeRecommendView :recommend="recommend"/>
       <HomeGoodsList :goods="goods.list"/>
@@ -19,7 +20,7 @@ import Scroll from "@/components/common/scroll/Scroll";
 import BackTop from "@/components/contents/backTop/BackTop";
 import HomeGoodsList from "@/components/contents/books/HomeGoodsList";
 
-import {getHomeMultidata,getBookAll,getBookByPage,getBookTypePage} from '@/network/home'
+import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
  export default {
     name: "Home",
     data(){
@@ -27,6 +28,7 @@ import {getHomeMultidata,getBookAll,getBookByPage,getBookTypePage} from '@/netwo
         banners:[],
         recommend:[],
         isShowBackTop:false,
+        saveY:0,
         goods:{
           page:0,
           list:[]
@@ -53,36 +55,52 @@ import {getHomeMultidata,getBookAll,getBookByPage,getBookTypePage} from '@/netwo
          },delay)
        }
      },
+     getHomeMultidata(){
+       getHomeMultidata().then(res=>{
+         this.banners=res.data.banners
+         this.recommend=res.data.recommends
+       })
+     },
+     getAll(){
+       getBookAll().then(res=>{
+         this.goods=res
+         console.log(this.goods)
+       })
+     },
+     getBookByPage(){
+       getBookByPage(++this.goods.page).then(res=>{
+         //每次往后读30个数据放入list中（使用数组结构）
+         this.goods.list.push(...res)
+         //调一下finishPullUp才能继续上拉加载
+         this.$refs.scroll.finishPullUp()
+         console.log(this.goods.list);
+       })
+     },
      backClick(){
        this.$refs.scroll.scrollTo(0,0,500)
      },
      scroll(position){
        this.isShowBackTop=(-position.y)>100
+     },
+     loadMore(){
+       this.getBookByPage()
      }
    },
    //进来
    activated() {
-     this.$refs.scroll.scrollTo(0,this.saveY,0)
+      //这个scroll()的time不能设为0
+     this.$refs.scroll.scrollTo(0,this.saveY,500)
      this.$refs.scroll.refresh()
    },
    //离开
    deactivated() {
      this.saveY=this.$refs.scroll.scroll.y
+     this.$refs.scroll.refresh()
+     // console.log(this.saveY);
    },
    created() {
-     var that = this;
-      getHomeMultidata().then(res=>{
-        that.banners=res.data.banners
-        that.recommend=res.data.recommends
-      });
-      // getBookAll().then(res=>{
-      //   that.goods=res
-      //   console.log(that.goods)
-      // })
-     getBookByPage(1).then(res=>{
-       that.goods.list=res
-       console.log(that.goods.list);
-     })
+      this.getHomeMultidata()
+      this.getBookByPage()
    },
    mounted() {
      const refresh=this.debounce(this.$refs.scroll.refresh)
@@ -99,16 +117,17 @@ import {getHomeMultidata,getBookAll,getBookByPage,getBookTypePage} from '@/netwo
   #home{
     position: relative;
     background-color: #fff;
-    height: 100vh;
+    height: calc(100vh - 44px - 49px);
   }
 
   .home-nav{
     /*color: #fff;*/
     position: relative;
     z-index: 9;
+    background-color: #fff;
   }
 
   .content{
-    height: calc(100% - 44px);
+    height: calc(100% - 44px - 49px);
   }
 </style>

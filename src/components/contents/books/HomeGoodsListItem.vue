@@ -1,6 +1,6 @@
 <template>
   <div class="goods-item" @click="itemClick">
-    <img :src="goodsItem.coverImg" alt="" @load = 'imageLoad'>
+    <img v-lazy="goodsItem.coverImg" alt="" @load = 'imageLoad'>
     <div class="goods-info">
       <div>{{goodsItem.bookName}} {{goodsItem.author}} {{goodsItem.type}}</div>
       <p class="intro">{{goodsItem.introduction}}</p>
@@ -41,6 +41,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  border-bottom: 1px solid #eee;
   /*padding: 2px;*/
 }
 .goods-item img {

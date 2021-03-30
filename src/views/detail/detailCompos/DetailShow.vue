@@ -14,7 +14,7 @@ export default {
   name: "DetailShow",
   methods:{
     imageLoad() {
-        this.$bus.$emit('itemImageLoad')
+       this.$bus.$emit('itemImageLoad')
     }
   },
   props:{
