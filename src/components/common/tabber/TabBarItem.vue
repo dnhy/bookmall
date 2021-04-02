@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
   export default {
     name: "TabBarItem",
     props:{
@@ -18,6 +19,7 @@
        }
     },
     computed:{
+      ...mapGetters(['user']),
       isActive(){
         // console.log("this.$route.path:"+this.$route.path)
         // console.log("this.path:"+this.path)
@@ -31,7 +33,16 @@
     methods:{
       itemClick(){
         if(this.$route.path !== this.path) {
-          this.$router.replace(this.path)
+          if (this.path==='/cart'||this.path==='/user'){
+            if (Object.keys(this.user).length === 0){
+              this.$router.push('/login')
+            } else {
+              this.$router.push(this.path)
+            }
+          } else {
+            this.$router.push(this.path)
+          }
+
         }
       }
     }

@@ -81,7 +81,10 @@ export default {
         product.desc=this.books.introduction
         product.cond=this.books.condition
         product.price=this.books.price
+        product.servicePrice=this.books.servicePrice
         product.id=this.books.bookId
+        product.count=this.books.count
+        product.uId=1
       //2.将商品信息添加到购物车
       this.addCart(product).then(res=>{
         this.$toast.show(res,2000)
@@ -108,7 +111,7 @@ export default {
         this.themeTopYs.push(0)
         this.themeTopYs.push(-this.$refs.params.$el.offsetTop)
         this.themeTopYs.push(-this.$refs.intros.$el.offsetTop)
-        console.log(this.themeTopYs);
+        //console.log(this.themeTopYs);
       })
     })
   },
@@ -144,6 +147,6 @@ export default {
     background-color: #fff;
   }
   .content{
-    height: calc(100% - 44px - 58px);
+    height: calc(100% - 44px);
   }
 </style>

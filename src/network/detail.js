@@ -1,5 +1,6 @@
 import {request} from "@/network/request";
-import it from "element-ui/src/locale/lang/it";
+import {formatDate} from "@/common/utils";
+import Vue from 'vue'
 
 export function getDetail(id){
   return request({
@@ -17,7 +18,7 @@ export class myBooks{
     this.coverImage=bookInfo.coverImg
     this.introImage=bookInfo.introImg
     this.introduction=bookInfo.introduction
-    this.userName=bookInfo.userName
+    this.seller=bookInfo.seller
     this.servName=bookInfo.servName
     this.price=bookInfo.price
     this.restAmount=bookInfo.restAmount
@@ -27,5 +28,8 @@ export class myBooks{
     this.condition=bookInfo.conditionName
     this.userAddress=bookInfo.userAddress
     this.author=bookInfo.author
+    this.servicePrice=bookInfo.servicePrice
+    this.seller=bookInfo.seller
   }
 }
+

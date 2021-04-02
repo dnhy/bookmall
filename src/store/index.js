@@ -7,7 +7,10 @@ import getters from "@/store/getters";
 Vue.use(Vuex)
 
 const state={
-  cartList:[]
+  cartList:[],
+  indentList:[],
+  user:{},
+  address:[]
 }
 export default new Vuex.Store({
   //action->mutaiton->state

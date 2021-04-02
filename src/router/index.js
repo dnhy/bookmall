@@ -6,6 +6,9 @@ const Category = () => import('views/category/Category.vue')
 const Cart = () => import('views/cart/Cart.vue')
 const Profile = () => import('views/profile/Profile.vue')
 const Detail=()=>import('views/detail/Detail.vue')
+const ConfirmIndent=()=>import('views/indent/ConfirmIndent.vue')
+const IndentAll=()=>import('views/indentAll/IndentAll.vue')
+const Login=()=>import('views/login/Login.vue')
 
 Vue.use(VueRouter)
 
@@ -33,6 +36,18 @@ const routes = [
   {
     path: '/detail/:book_id',
     component:Detail
+  },
+  {
+    path: '/cfindent',
+    component:ConfirmIndent
+  },
+  {
+    path: '/indentall/:type_id',
+    component:IndentAll
+  },
+  {
+    path: '/login',
+    component:Login
   }
 ]
 

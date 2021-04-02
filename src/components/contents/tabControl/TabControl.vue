@@ -16,6 +16,12 @@ export default {
       default(){
         return []
       }
+    },
+    currentIndexProps:{
+      type:Number,
+      default() {
+        return 0;
+      }
     }
   },
   data(){
@@ -26,7 +32,21 @@ export default {
   methods:{
     itemClick(index) {
       this.currentIndex=index
+      this.$emit('tabClick',index)
     }
+  },
+  created() {
+
+  },
+  mounted() {
+
+  },
+  activated() {
+    this.currentIndex=this.currentIndexProps
+    console.log('this.currentIndex:'+this.currentIndex);
+  },
+  deactivated() {
+    this.currentIndex=0
   }
 }
 </script>

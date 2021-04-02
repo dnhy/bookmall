@@ -13,7 +13,8 @@ import NavBar from "@/components/common/navbar/NavBar";
 import CartList from "@/views/cart/childComps/CartList";
 import CartBottomBar from "@/views/cart/childComps/CartBottomBar";
 
-import {mapGetters} from 'vuex'
+
+import {mapActions, mapGetters} from 'vuex'
 
   export default {
     name: "Cart",
@@ -30,7 +31,8 @@ import {mapGetters} from 'vuex'
       // ...mapGetters(['cartLength'])
       ...mapGetters({
         length:'cartLength'
-      })
+      }),
+      ...mapGetters(['cartList'])
     }
   }
 </script>

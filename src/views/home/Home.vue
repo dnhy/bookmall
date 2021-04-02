@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <nav-bar class="home-nav"><div slot="center"><Search/></div><div slot="right">登录</div></nav-bar>
+    <nav-bar class="home-nav"><div slot="center"><Search/></div><div :class="{hidden:isHidden}" slot="right" @click="login">登录</div></nav-bar>
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="scroll"
             :pull-up-load="true" @pullingUp="loadMore">
       <home-swiper :banners="banners"/>
@@ -21,6 +21,7 @@ import BackTop from "@/components/contents/backTop/BackTop";
 import HomeGoodsList from "@/components/contents/books/HomeGoodsList";
 
 import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
+import {mapGetters} from "vuex";
  export default {
     name: "Home",
     data(){
@@ -29,6 +30,7 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
         recommend:[],
         isShowBackTop:false,
         saveY:0,
+        isHidden:false,
         goods:{
           page:0,
           list:[]
@@ -44,7 +46,11 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
       BackTop,
       HomeGoodsList
     },
+   computed:{
+     ...mapGetters(['user']),
+   },
    methods:{
+
       //刷新频繁的函数防抖动
      debounce(func ,delay){
        let timer=null
@@ -73,7 +79,6 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
          this.goods.list.push(...res)
          //调一下finishPullUp才能继续上拉加载
          this.$refs.scroll.finishPullUp()
-         console.log(this.goods.list);
        })
      },
      backClick(){
@@ -84,6 +89,9 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
      },
      loadMore(){
        this.getBookByPage()
+     },
+     login(){
+       this.$router.push('/login')
      }
    },
    //进来
@@ -91,6 +99,12 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
       //这个scroll()的time不能设为0
      this.$refs.scroll.scrollTo(0,this.saveY,500)
      this.$refs.scroll.refresh()
+     //登录按钮的显示
+     if (Object.keys(this.user).length!==0){
+       this.isHidden=true
+     }else {
+       this.isHidden=false
+     }
    },
    //离开
    deactivated() {
@@ -109,7 +123,7 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
        // this.$refs.scroll && this.$refs.scroll.refresh()
         refresh()
      })
-   }
+   },
  }
 </script>
 
@@ -126,7 +140,9 @@ import {getHomeMultidata,getBookAll,getBookByPage} from '@/network/home'
     z-index: 9;
     background-color: #fff;
   }
-
+  .hidden{
+    display: none;
+  }
   .content{
     height: calc(100% - 44px - 49px);
   }

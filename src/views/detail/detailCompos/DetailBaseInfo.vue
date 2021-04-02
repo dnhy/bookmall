@@ -5,7 +5,7 @@
       <div class="base">
 <!--        <span class="title">{{books.bookName}}</span>-->
         <span class="price">￥{{books.price}}</span>
-        <span class="service">{{books.servName}}</span>
+        <span class="service">{{books.servName}}{{myServicePrice}}</span>
         <el-button size="mini" class="conditon-desc">{{books.condition}}</el-button>
       </div>
       <div class="info-service">
@@ -48,6 +48,9 @@ export default {
     }
   },
   computed:{
+    myServicePrice(){
+      return this.books.servicePrice?this.books.servicePrice+'元':''
+    },
     authorMearge(){
       // let author=''
       // const bookAuthor=this.books.bookAuthor

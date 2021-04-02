@@ -16,7 +16,9 @@
 
 <script>
 import CheckButton from "@/components/contents/checkButton/CheckButton";
-import { mapGetters } from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
+
+import {formatDate,formatDateIndent} from "@/common/utils";
 
 export default {
   name: "CartBottomBar",
@@ -24,7 +26,7 @@ export default {
     CheckButton
   },
   computed:{
-    ...mapGetters(['cartList']),
+    ...mapGetters(['cartList','indentList']),
     totalPrice(){
       return this.cartList.filter(item=>{
         return item.checked
@@ -47,6 +49,7 @@ export default {
     },
   },
   methods:{
+    ...mapActions(['addIndentShow']),
     selectAll(){
       if (this.isSelectAll){
         this.cartList.forEach(item=>item.checked=false)
@@ -56,7 +59,14 @@ export default {
     },
     calculate(){
       if (!this.cartList.filter((item)=>item.checked).length){
+        //console.log(this.cartList);
         this.$toast.show('至少选择一件商品')
+      }else {
+        //indentList就是选定后的cartList
+        const indentList=this.cartList.filter((item)=>item.checked)
+        console.log(this.cartList);
+        this.addIndentShow(indentList)
+        this.$router.push('/cfindent')
       }
     }
   }
